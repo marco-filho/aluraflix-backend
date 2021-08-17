@@ -12,6 +12,12 @@ module.exports = {
   * @returns
   */
   up: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkInsert('Categorias', [{
+      titulo: 'Livre',
+      cor: 'ffffff',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }]),
     await queryInterface.addColumn(
       'Videos',
       'categoriaId',
