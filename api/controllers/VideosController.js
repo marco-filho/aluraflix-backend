@@ -11,9 +11,18 @@ let errorCode = 500;
 
 class VideosController {
     static async readVideos(req, res) {
+        let query = req.query.search
         try {
-            const allVideos = await database.Videos.findAll()
-            return res.status(200).json(allVideos)
+            let videos 
+            if (query)
+                videos = await database.Videos.findAll({
+                    where: {
+                        titulo: {[require('sequelize').Sequelize.Op.like]: `%${query}%`}
+                    }
+                })
+            else
+                videos = await database.Videos.findAll()
+            return res.status(200).json(videos)
         } catch (error) {
             return res.status(errorCode).json({ message: error.message })
         }
