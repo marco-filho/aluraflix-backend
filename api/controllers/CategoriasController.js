@@ -36,13 +36,11 @@ class CategoriasController {
     static async createCategoria(req, res) {
         const newCategoria = req.body
         try {
-            categoriaValidator.hasAllFields(newCategoria)
-            const found = await database.Categorias.findOne({ where: { cor: newCategoria.cor } })
-            if (found) throw new AlreadyExists('cor', newCategoria.cor)
-
+            await categoriaValidator.hasAllFields(newCategoria)
             const createdCategoria = await database.Categorias.create(newCategoria)
             return res.status(201).json(createdCategoria)
         } catch (error) {
+            errorCode = 500;
             if (error instanceof InvalidField || error instanceof MissingField)
                 errorCode = 422
             else if (error instanceof InvalidEntry || error instanceof InvalidCharacterCount)
@@ -57,13 +55,11 @@ class CategoriasController {
         const { id } = req.params
         const updateInfo = req.body
         try {
-            categoriaValidator.fields(updateInfo)
-            const found = await database.Categorias.findOne({ where: { cor: updateInfo.cor } })
-            if (found) throw new AlreadyExists('cor', updateInfo.cor)
-
+            await categoriaValidator.fields(updateInfo)
             await database.Categorias.update(updateInfo, { where: { id: Number(id) } })
             return CategoriasController.readCategoria(req, res)
         } catch (error) {
+            errorCode = 500;
             if (error instanceof InvalidField)
                 errorCode = 422
             else if (error instanceof InvalidEntry || error instanceof InvalidCharacterCount)
