@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Categorias',
+    createdAt: 'criadoEm',
+    updatedAt: 'atualizadoEm',
+    paranoid: true,
+    deletedAt: 'excluidoEm'
   });
   return Categorias;
 };

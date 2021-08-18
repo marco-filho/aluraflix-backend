@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Videos',
+    createdAt: 'criadoEm',
+    updatedAt: 'atualizadoEm',
+    paranoid: true,
+    deletedAt: 'excluidoEm'
   });
   return Videos;
 };
