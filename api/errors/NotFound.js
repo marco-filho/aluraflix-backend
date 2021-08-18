@@ -1,6 +1,6 @@
 class NotFound extends Error {
     constructor(message) {
-        message = !message ? 'Não encontrado' : message;
+        message = !message ? 'Não encontrado.' : message;
         super(message)
     }
 }
