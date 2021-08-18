@@ -21,5 +21,9 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: true,
     deletedAt: 'excluidoEm'
   });
+  Categorias.addHook('afterDestroy', (categoria, options) => {
+    console.log('hook chamado')
+    sequelize.models.Videos.update({ categoriaId: 1 }, { where: { categoriaId: categoria.id } })
+  })
   return Categorias;
 };

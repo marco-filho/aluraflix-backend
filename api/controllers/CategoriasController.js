@@ -86,7 +86,7 @@ class CategoriasController {
     static async deleteCategoria(req, res) {
         const { id } = req.params
         try {
-            const wasDeleted = await database.Categorias.destroy({ where: { id: Number(id) } })
+            const wasDeleted = await database.Categorias.destroy({ where: { id: Number(id) }, individualHooks: true })
             if (!wasDeleted)
                 throw new NotFound();
             return res.status(200).json({ message: `Categoria com id ${id} excluída com sucesso!`})
