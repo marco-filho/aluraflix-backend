@@ -32,6 +32,19 @@ class CategoriasController {
             return res.status(errorCode).json({ message: error.message })
         }
     }
+
+    static async readVideosInCategoria(req, res) {
+        const { id } = req.params
+        try {
+            const allVideosInCategoria = await database.Videos.findAll({ where: { categoriaId: Number(id) } })
+            if (allVideosInCategoria.length === 0)
+                throw new NotFound();
+            return res.status(200).json(allVideosInCategoria)
+        } catch (error) {
+            errorCode = error instanceof NotFound ? 404 : 500;
+            return res.status(errorCode).json({ message: error.message })
+        }
+    }
     
     static async createCategoria(req, res) {
         const newCategoria = req.body
