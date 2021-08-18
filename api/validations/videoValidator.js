@@ -2,34 +2,38 @@ const InvalidField = require('./errors/InvalidField');
 const InvalidEntry = require('./errors/InvalidEntry');
 const InvalidCharacterCount = require('./errors/InvalidCharacterCount');
 const MissingField = require('./errors/MissingField');
-const validFields = ['titulo', 'descricao', 'url']
+const database = require('../models');
+const necessaryFields = ['titulo', 'descricao', 'url']
+const validFields = necessaryFields.concat('categoriaId')
 
 class videoValidator {
-    static hasAllFields(video) {
-        this.fields(video)
-        validFields.forEach(f => {
+    static async hasAllFields(video) {
+        await this.fields(video)
+        necessaryFields.forEach(f => {
             if (!(f in video))
-                throw new MissingField(validFields);
+                throw new MissingField(necessaryFields);
         })
     }
 
-    static fields(video) {
+    static async fields(video) {
         for (const field in video) {
             if (validFields.includes(field)) {
-                if ((typeof field != 'undefined')) {
-                    switch (field) {
-                        case 'titulo':
-                            this.tittle(video[field])
-                            break;
-                        case 'descricao':
-                            this.description(video[field])
-                            break;
-                        case 'url':
-                            this.url(video[field])
-                            break;
-                        default:
-                            throw new InvalidField(field)
-                    }
+                switch (field) {
+                    case 'titulo':
+                        this.tittle(video[field])
+                        break;
+                    case 'descricao':
+                        this.description(video[field])
+                        break;
+                    case 'url':
+                        this.url(video[field])
+                        break;
+                    case 'categoriaId':
+                        let result = await this.categoryId(video[field])
+                        if (result != true) throw result
+                        break;
+                    default:
+                        throw new InvalidField(field)
                 }
             } else throw new InvalidField(field)
         }
@@ -59,6 +63,18 @@ class videoValidator {
             throw new InvalidEntry('url', url,
                 'deve conter exatamente 11 caracteres e ' +
                 'apenas letras, números ou os simbolos \'_\' e \'-\'')
+    }
+
+    static async categoryId(categoryId) {
+        try {
+            const found = await database.Categorias.findOne({ where: { id: categoryId } })
+            if (!found)
+                throw new InvalidEntry('categoriaId', categoryId, 'a categoria não existe')
+            else
+                return true
+        } catch (error) {
+            return error
+        }
     }
 }
 

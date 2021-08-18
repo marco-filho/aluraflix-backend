@@ -35,10 +35,11 @@ class VideosController {
     static async createVideo(req, res) {
         const newVideo = req.body
         try {
-            videoValidator.hasAllFields(newVideo)
+            await videoValidator.hasAllFields(newVideo)
             const createdVideo = await database.Videos.create(newVideo)
             return res.status(201).json(createdVideo)
         } catch (error) {
+            errorCode = 500;
             if (error instanceof MissingField || error instanceof InvalidField)
                 errorCode = 422
             else if (error instanceof InvalidEntry || error instanceof InvalidCharacterCount)
@@ -51,10 +52,11 @@ class VideosController {
         const { id } = req.params
         const updateInfo = req.body
         try {
-            videoValidator.fields(updateInfo)
+            await videoValidator.fields(updateInfo)
             await database.Videos.update(updateInfo, { where: { id: Number(id) } })
             return VideosController.readVideo(req, res)
         } catch (error) {
+            errorCode = 500;
             if (error instanceof InvalidField)
                 errorCode = 422
             else if (error instanceof InvalidEntry || error instanceof InvalidCharacterCount)
