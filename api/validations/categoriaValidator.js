@@ -1,9 +1,9 @@
-const InvalidField = require('./errors/InvalidField');
-const InvalidEntry = require('./errors/InvalidEntry');
-const InvalidCharacterCount = require('./errors/InvalidCharacterCount');
-const MissingField = require('./errors/MissingField');
-const AlreadyExists = require('./errors/AlreadyExists');
-const database = require('../models');
+const InvalidField = require('./errors/InvalidField')
+const InvalidEntry = require('./errors/InvalidEntry')
+const InvalidCharacterCount = require('./errors/InvalidCharacterCount')
+const MissingField = require('./errors/MissingField')
+const AlreadyExists = require('./errors/AlreadyExists')
+const database = require('../models')
 const validFields = ['titulo', 'cor']
 
 class categoriaValidator {
@@ -11,7 +11,7 @@ class categoriaValidator {
         this.fields(categoria)
         validFields.forEach(f => {
             if (!(f in categoria))
-                throw new MissingField(validFields);
+                throw new MissingField(validFields)
         })
     }
 
@@ -21,12 +21,12 @@ class categoriaValidator {
                 switch (field) {
                     case 'titulo':
                         this.tittle(categoria[field])
-                        break;
+                        break
                     case 'cor':
                         this.color(categoria)
                         const result = await this.exists(categoria[field])
                         if (!result) throw result
-                        break;
+                        break
                     default:
                         throw new InvalidField(field)
                 }

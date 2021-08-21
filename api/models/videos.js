@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 const {
   Model
-} = require('sequelize');
+} = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Videos extends Model {
     static associate(models) {
@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'categoriaId'
       })
     }
-  };
+  }
   Videos.init({
     titulo: DataTypes.STRING,
     descricao: DataTypes.TEXT,
@@ -21,6 +21,6 @@ module.exports = (sequelize, DataTypes) => {
     updatedAt: 'atualizadoEm',
     paranoid: true,
     deletedAt: 'excluidoEm'
-  });
-  return Videos;
-};
+  })
+  return Videos
+}

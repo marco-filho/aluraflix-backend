@@ -1,8 +1,8 @@
-const InvalidField = require('./errors/InvalidField');
-const InvalidEntry = require('./errors/InvalidEntry');
-const InvalidCharacterCount = require('./errors/InvalidCharacterCount');
-const MissingField = require('./errors/MissingField');
-const database = require('../models');
+const InvalidField = require('./errors/InvalidField')
+const InvalidEntry = require('./errors/InvalidEntry')
+const InvalidCharacterCount = require('./errors/InvalidCharacterCount')
+const MissingField = require('./errors/MissingField')
+const database = require('../models')
 const necessaryFields = ['titulo', 'descricao', 'url']
 const validFields = necessaryFields.concat('categoriaId')
 
@@ -11,7 +11,7 @@ class videoValidator {
         await this.fields(video)
         necessaryFields.forEach(f => {
             if (!(f in video))
-                throw new MissingField(necessaryFields);
+                throw new MissingField(necessaryFields)
         })
     }
 
@@ -21,17 +21,17 @@ class videoValidator {
                 switch (field) {
                     case 'titulo':
                         this.tittle(video[field])
-                        break;
+                        break
                     case 'descricao':
                         this.description(video[field])
-                        break;
+                        break
                     case 'url':
                         this.url(video[field])
-                        break;
+                        break
                     case 'categoriaId':
                         let result = await this.categoryId(video[field])
                         if (result != true) throw result
-                        break;
+                        break
                     default:
                         throw new InvalidField(field)
                 }

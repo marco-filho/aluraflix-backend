@@ -1,14 +1,14 @@
-const database = require('../models');
-const categoriaValidator = require('../validations/categoriaValidator');
+const database = require('../models')
+const categoriaValidator = require('../validations/categoriaValidator')
 
-const NotFound = require('../errors/NotFound');
-const MissingField = require('../validations/errors/MissingField');
-const InvalidField = require('../validations/errors/InvalidField');
-const InvalidEntry = require('../validations/errors/InvalidEntry');
-const InvalidCharacterCount = require('../validations/errors/InvalidCharacterCount');
-const AlreadyExists = require('../validations/errors/AlreadyExists');
+const NotFound = require('../errors/NotFound')
+const MissingField = require('../validations/errors/MissingField')
+const InvalidField = require('../validations/errors/InvalidField')
+const InvalidEntry = require('../validations/errors/InvalidEntry')
+const InvalidCharacterCount = require('../validations/errors/InvalidCharacterCount')
+const AlreadyExists = require('../validations/errors/AlreadyExists')
 
-let errorCode = 500;
+let errorCode = 500
 
 class CategoriasController {
     static async readCategorias(req, res) {
@@ -25,10 +25,10 @@ class CategoriasController {
         try {
             const oneCategoria = await database.Categorias.findOne({ where: { id: Number(id) } })
             if (!oneCategoria)
-                throw new NotFound();
+                throw new NotFound()
             return res.status(200).json(oneCategoria)
         } catch (error) {
-            errorCode = error instanceof NotFound ? 404 : 500;
+            errorCode = error instanceof NotFound ? 404 : 500
             return res.status(errorCode).json({ message: error.message })
         }
     }
@@ -38,10 +38,10 @@ class CategoriasController {
         try {
             const allVideosInCategoria = await database.Videos.findAll({ where: { categoriaId: Number(id) } })
             if (allVideosInCategoria.length === 0)
-                throw new NotFound();
+                throw new NotFound()
             return res.status(200).json(allVideosInCategoria)
         } catch (error) {
-            errorCode = error instanceof NotFound ? 404 : 500;
+            errorCode = error instanceof NotFound ? 404 : 500
             return res.status(errorCode).json({ message: error.message })
         }
     }
@@ -53,7 +53,7 @@ class CategoriasController {
             const createdCategoria = await database.Categorias.create(newCategoria)
             return res.status(201).json(createdCategoria)
         } catch (error) {
-            errorCode = 500;
+            errorCode = 500
             if (error instanceof InvalidField || error instanceof MissingField)
                 errorCode = 422
             else if (error instanceof InvalidEntry || error instanceof InvalidCharacterCount)
@@ -72,7 +72,7 @@ class CategoriasController {
             await database.Categorias.update(updateInfo, { where: { id: Number(id) } })
             return CategoriasController.readCategoria(req, res)
         } catch (error) {
-            errorCode = 500;
+            errorCode = 500
             if (error instanceof InvalidField)
                 errorCode = 422
             else if (error instanceof InvalidEntry || error instanceof InvalidCharacterCount)
@@ -88,10 +88,10 @@ class CategoriasController {
         try {
             const wasDeleted = await database.Categorias.destroy({ where: { id: Number(id) }, individualHooks: true })
             if (!wasDeleted)
-                throw new NotFound();
+                throw new NotFound()
             return res.status(200).json({ message: `Categoria com id ${id} excluída com sucesso!`})
         } catch (error) {
-            errorCode = error instanceof NotFound ? 404 : 500;
+            errorCode = error instanceof NotFound ? 404 : 500
             return res.status(errorCode).json({ message: error.message })
         }
     }

@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 module.exports = {
   /**
@@ -36,4 +36,4 @@ module.exports = {
     await queryInterface.removeColumn('Videos', 'deletedAt')
     await queryInterface.removeColumn('Categorias', 'deletedAt')
   }
-};
+}
