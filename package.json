@@ -4,11 +4,11 @@
   "description": "",
   "main": "./api/index.js",
   "scripts": {
-    "start": "nodemon ./api/index.js",
+    "start": "nodemon ./api/index.js --ignore ./tests",
     "debug": "nodemon --inspect ./api/index.js",
     "eslint": ".\\node_modules\\.bin\\eslint .",
     "eslint:fix": ".\\node_modules\\.bin\\eslint . --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": ".\\node_modules\\.bin\\jest"
   },
   "keywords": [],
   "author": "",

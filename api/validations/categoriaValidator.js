@@ -13,30 +13,33 @@ class categoriaValidator {
             if (!(f in categoria))
                 throw new MissingField(validFields)
         })
+        return true
     }
 
     static async fields(categoria) {
         for (const field in categoria) {
             if (validFields.includes(field)) {
+                if (!categoria[field]) throw new InvalidEntry(field, categoria[field])
                 switch (field) {
                     case 'titulo':
-                        this.tittle(categoria[field])
+                        this.title(categoria[field])
                         break
                     case 'cor':
                         this.color(categoria)
                         const result = await this.exists(categoria[field])
-                        if (!result) throw result
+                        if (result) throw result
                         break
                     default:
                         throw new InvalidField(field)
                 }
             } else throw new InvalidField(field)
         }
+        return true
     }
                                 
-    static tittle(tittle) {
+    static title(title) {
         let max = 40, min = 1
-        if (tittle.length <= max && tittle.length >= min)
+        if (title.length <= max && title.length >= min)
             return true
         else
             throw new InvalidCharacterCount('titulo', max, min)

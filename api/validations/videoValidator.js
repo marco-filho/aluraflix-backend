@@ -13,14 +13,16 @@ class videoValidator {
             if (!(f in video))
                 throw new MissingField(necessaryFields)
         })
+        return true
     }
 
     static async fields(video) {
         for (const field in video) {
             if (validFields.includes(field)) {
+                if (!video[field]) throw new InvalidEntry(field, video[field])
                 switch (field) {
                     case 'titulo':
-                        this.tittle(video[field])
+                        this.title(video[field])
                         break
                     case 'descricao':
                         this.description(video[field])
@@ -37,11 +39,12 @@ class videoValidator {
                 }
             } else throw new InvalidField(field)
         }
+        return true
     }
                                 
-    static tittle(tittle) {
+    static title(title) {
         let max = 100, min = 1
-        if (tittle.length <= max && tittle.length >= min)
+        if (title.length <= max && title.length >= min)
             return true
         else
             throw new InvalidCharacterCount('titulo', max, min)
